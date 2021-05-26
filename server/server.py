@@ -28,7 +28,7 @@ def echo(conn):
             print("Got message from " + data["sender"])
             print(str(data) + "\n")
         except:
-            print("Invalid message from " + conn.getpeername())
+            print("Invalid message from ", conn.getpeername())
             break
 
         # Try to send message buffer.
