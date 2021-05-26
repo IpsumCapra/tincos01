@@ -5,6 +5,7 @@ PORT = 9000
 
 BUFSIZE = 1024
 
+# Connect to server, exit with failure.
 s = socket.socket()
 try:
     s.connect((HOST, PORT))
@@ -12,8 +13,11 @@ except:
     print("Connection refused.")
     exit()
 
-data = "{ello ello ello}"
+# Set data.
+data = "{\"sender\":\"test\"}"
 
+# Send data.
 s.send(data.encode("ascii"))
 
+# Print received info.
 print(s.recv(BUFSIZE).decode())
