@@ -27,7 +27,8 @@ def echo(conn):
             messages[data["sender"]] = data
             print("Got message from " + data["sender"])
             print(str(data) + "\n")
-        except:
+        except Exception as e:
+            print(e)
             print("Invalid message from ", conn.getpeername())
             break
 
