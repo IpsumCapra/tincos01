@@ -130,6 +130,18 @@ def dijkstra(name, start, target, frees):
 
 def generateNextMove():
     genMap()
+    for y in range(10):
+        for x in range(10):
+            distance = str(dist[x][y]).zfill(2)
+            end = ""
+            if x == 9:
+                end = "\n"
+            if free[x][y]:
+                print("\u001B[42m[" + distance + "]\u001B[0m", end=end)
+            elif distance == "-1":
+                print("\u001B[41m[" + distance + "]\u001B[0m", end=end)
+            else:
+                print("\u001B[45m[" + distance + "]\u001B[0m", end=end)
     for dest in destinations:
         if dest in locations and dest in destinations and locations[dest] != destinations[dest]:
             dijkstra(dest, locations[dest], destinations[dest], free[:])
