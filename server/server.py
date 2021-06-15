@@ -124,6 +124,7 @@ def dijkstra(name, start, target, frees):
                         return
                     new_next.append([x, y - 1])
         next_nodes = new_next
+    print("Could not plan route.")
 
 
 def generateNextMove():
