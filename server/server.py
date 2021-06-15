@@ -26,13 +26,6 @@ def inPath(x, y, path):
     return False
 
 
-def genMap():
-    free = [[True for x in range(10)] for y in range(10)]
-    for obstacle in obstacles:
-        if 0 < obstacle[0] < 9 and 0 < obstacle[1] < 9:
-            free[obstacle[0]][obstacle[1]] = False
-
-
 def genPath(name, target, dists, frees):
     x = target[0]
     y = target[1]
@@ -129,14 +122,17 @@ def dijkstra(name, start, target, frees):
 
 
 def generateNextMove():
-    genMap()
+    freeMap = [[True for x in range(10)] for y in range(10)]
+    for obstacle in obstacles:
+        if 0 < obstacle[0] < 9 and 0 < obstacle[1] < 9:
+            freeMap[obstacle[0]][obstacle[1]] = False
     for y in range(10):
         for x in range(10):
             distance = str(dist[x][y]).zfill(2)
             end = ""
             if x == 9:
                 end = "\n"
-            if free[x][y]:
+            if freeMap[x][y]:
                 print("\u001B[42m[" + distance + "]\u001B[0m", end=end)
             elif distance == "-1":
                 print("\u001B[41m[" + distance + "]\u001B[0m", end=end)
@@ -144,7 +140,7 @@ def generateNextMove():
                 print("\u001B[45m[" + distance + "]\u001B[0m", end=end)
     for dest in destinations:
         if dest in locations and dest in destinations and locations[dest] != destinations[dest]:
-            dijkstra(dest, locations[dest], destinations[dest], free[:])
+            dijkstra(dest, locations[dest], destinations[dest], freeMap[:])
         else:
             print(dest + " has arrived.")
 
