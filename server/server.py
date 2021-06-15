@@ -131,6 +131,8 @@ def generateNextMove():
     for dest in destinations:
         if dest in locations and dest in destinations and locations[dest] != destinations[dest]:
             dijkstra(dest, locations[dest], destinations[dest], free[:])
+        else:
+            print(dest + " has arrived.")
 
 
 def robotLocation(pos):
