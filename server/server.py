@@ -65,7 +65,7 @@ def genPath(name, target, dists, frees):
 
     for y in range(10):
         for x in range(10):
-            distance = str(dist[x][y]).zfill(2)
+            distance = str(dists[x][y]).zfill(2)
             end = ""
             if x == 9:
                 end = "\n"
