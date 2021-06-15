@@ -6,7 +6,7 @@ HOST = ""
 PORT = 9000
 
 BUFSIZE = 1024
-SCANRANGE = 10
+SCANRANGE = 100
 
 messages = {}
 obstacles = []
@@ -29,7 +29,8 @@ def inPath(x, y, path):
 def genMap():
     free = [[True for x in range(10)] for y in range(10)]
     for obstacle in obstacles:
-        free[obstacle[0]][obstacle[1]] = False
+        if 0 < obstacle[0] < 9 and 0 < obstacle[1] < 9:
+            free[obstacle[0]][obstacle[1]] = False
 
 
 def genPath(name, target, dists, frees):
