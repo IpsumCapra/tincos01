@@ -61,7 +61,7 @@ def genPath(name, target, dists, frees):
                 y = y - 1
                 continue
 
-    targets[name] = path[len(path) - 1]
+    targets[name] = path[len(path) - 2]
 
     for y in range(10):
         for x in range(10):
@@ -129,7 +129,7 @@ def dijkstra(name, start, target, frees):
 def generateNextMove():
     genMap()
     for dest in destinations:
-        if dest in locations and dest in destinations:
+        if dest in locations and dest in destinations and locations[dest] != destinations[dest]:
             dijkstra(dest, locations[dest], destinations[dest], free[:])
 
 
