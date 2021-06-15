@@ -178,7 +178,7 @@ def echo(conn):
         # Try to send message buffer.
         try:
             generateNextMove()
-            conn.sendall(("{\"targets\":" + str(targets) + "}").encode("ascii"))
+            conn.sendall(("{\"targets\":" + json.dumps(targets) + "}").encode("ascii"))
         except:
             print("Could not send data to", conn.getpeername())
             break
