@@ -124,7 +124,7 @@ def dijkstra(name, start, target, frees):
 def generateNextMove():
     freeMap = [[True for x in range(10)] for y in range(10)]
     for obstacle in obstacles:
-        if 0 < obstacle[0] < 9 and 0 < obstacle[1] < 9:
+        if 0 <= obstacle[0] <= 9 and 0 <= obstacle[1] <= 9:
             freeMap[obstacle[0]][obstacle[1]] = False
     for y in range(10):
         for x in range(10):
