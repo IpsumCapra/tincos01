@@ -4,7 +4,6 @@ import json
 import websockets
 import asyncio
 
-
 HOST = ""
 PORT = 9000
 
@@ -41,9 +40,15 @@ async def handle_ws(websocket, uri):
             }
             await websocket.send(json.dumps(returnData))
 
-ws = websockets.serve(handle_ws, HOST, WSPORT)
-asyncio.get_event_loop().run_until_complete(ws)
-asyncio.get_event_loop().run_forever()
+
+def handle_s(sock):
+    # Keep accepting connections.
+    while True:
+        conn, addr = sock.accept()
+        clientCount += 1
+        print("Connection accepted from", addr)
+        t = threading.Thread(target=echo, args=(conn,))
+        t.start()
 
 
 def inPath(x, y, path):
@@ -179,6 +184,7 @@ def robotLocation(pos):
             return True
     return False
 
+
 def echo(conn):
     global messages, clientCount
     while True:
@@ -227,14 +233,14 @@ def echo(conn):
         messages = {}
 
 
+ws = websockets.serve(handle_ws, HOST, WSPORT)
+
 # Create the server.
 s = socket.create_server((HOST, PORT))
 s.listen()
 
-# Keep accepting connections.
-while True:
-    conn, addr = s.accept()
-    clientCount += 1
-    print("Connection accepted from", addr)
-    t = threading.Thread(target=echo, args=(conn,))
-    t.start()
+t = threading.Thread(target=handle_s, args=(s,))
+t.start()
+
+asyncio.get_event_loop().run_until_complete(ws)
+asyncio.get_event_loop().run_forever()

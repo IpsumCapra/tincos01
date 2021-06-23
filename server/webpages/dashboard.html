@@ -13,6 +13,10 @@
             Queue:<br>
         </div>
 
+        <div id="myDiv" style ="background-color:lightgray">
+
+        </div>
+
         <br>
 
         <div id="fieldSend" style ="background-color:darkgray">
@@ -30,6 +34,7 @@
         
         <script>
             // Websocket connection with server
+            let data;
             let ws = new WebSocket("ws://145.24.222.80:8008");
 
             function get_data() {
@@ -37,9 +42,9 @@
             }
             
             ws.onmessage = function(message) {
-                let data = JSON.parse(message.data);
+                data = JSON.parse(message.data);
                 // Do something with the data
-                //document.getElementById("myDiv").innerHTML = JSON.stringify(data);
+                document.getElementById("myDiv").innerHTML = JSON.stringify(data);
 
                 UpdateCanvas();
                 UpdateUnits();
@@ -64,34 +69,26 @@
 
                 // Obstacles
                 myCanvas.fillStyle = "brown";
-                //for (let index = 0; index < array.length; index++) {
-                    //const element = array[index];
-                    myCanvas.drawBlock(5, 5);
-                //}
+                let obstacles = data["obstacles"];
+                for (const obs in obstacles) {
+                    myCanvas.drawBlock(obstacles[obs][0], obstacles[obs][1]);
+                }
 
                 // Robots
-                myCanvas.fillStyle = "red";
-                myCanvas.drawBlock(0, 0);
-                myCanvas.fillStyle = "green";
-                myCanvas.drawBlock(1, 0);
-                myCanvas.fillStyle = "blue";
-                myCanvas.drawBlock(2, 0);
-                myCanvas.fillStyle = "yellow";
-                myCanvas.drawBlock(3, 0);
+                let locations = data["locations"];
+                for (const loc in locations) {
+                    myCanvas.fillStyle = loc;
+                    myCanvas.drawBlock(locations[loc][0], locations[loc][1]);
+                }
             }
 
             // Textfield textUnits
             function UpdateUnits(){
                 var text = "Available units:<br>"
-                //for (let index = 0; index < array.length; index++) { ////////////
-                //    const element = array[index];
-
-                    var unitName = "";
-                    var unitLocation = "";
-                    
-                    text += "<span style =\"color:red\">"+unitName+"</span>: <span>"+unitLocation+"</span><br>";
-                //}
-                
+                let locations = data["locations"];
+                for (const loc in locations) {
+                    text += "<span style =\"color:\""+loc+">"+loc+"</span>: <span>"+JSON.stringify(locations[loc])+"</span><br>";
+                }
                 document.getElementById("textUnits").innerHTML = text;
             }
 
