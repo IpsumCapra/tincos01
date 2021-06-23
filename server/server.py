@@ -215,7 +215,7 @@ def echo(conn):
                     movements[sender] = msgData
                 # Static obstacles
                 if msgType == 0:
-                    if msgData not in obstacles and not robotLocation(msgData):
+                    if msgData not in obstacles and not robotLocation(msgData) and 0 <= msgData[0] <= boardSize - 1 and 0 <= msgData[1] <= boardSize - 1:
                         obstacles.append(msgData)
                 # Free places
                 if msgType == 1:
