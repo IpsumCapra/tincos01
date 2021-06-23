@@ -259,7 +259,8 @@ def echo(conn):
         try:
             generateNextMove()
             conn.sendall(("{\"targets\":" + json.dumps(targets) + "}").encode("ascii"))
-        except:
+        except Exception as e:
+            print(e)
             print("Could not send data to", conn.getpeername())
             break
     clientCount -= 1
