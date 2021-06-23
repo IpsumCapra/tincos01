@@ -68,7 +68,7 @@ def genPath(name, target, dists, frees):
 
     while distance > 0:
         distance = dists[x][y]
-        if x < 9:
+        if x < boardSize - 1:
             if dists[x + 1][y] < distance and dists[x + 1][y] != -1:
                 path.append([x + 1, y])
                 x = x + 1
@@ -78,7 +78,7 @@ def genPath(name, target, dists, frees):
                 path.append([x - 1, y])
                 x = x - 1
                 continue
-        if y < 9:
+        if y < boardSize - 1:
             if dists[x][y + 1] < distance and dists[x][y + 1] != -1:
                 path.append([x, y + 1])
                 y = y + 1
@@ -95,7 +95,7 @@ def genPath(name, target, dists, frees):
         for x in range(boardSize):
             distance = str(dists[x][y]).zfill(2)
             end = ""
-            if x == 9:
+            if x == boardSize - 1:
                 end = "\n"
             if frees[x][y]:
                 print("\u001B[42m[" + distance + "]\u001B[0m", end=end)
@@ -119,7 +119,7 @@ def dijkstra(name, start, target, frees):
         for node in next_nodes:
             x = node[0]
             y = node[1]
-            if x < 9:
+            if x < boardSize - 1:
                 if frees[x + 1][y]:
                     frees[x + 1][y] = False
                     dists[x + 1][y] = i + 1
@@ -135,7 +135,7 @@ def dijkstra(name, start, target, frees):
                         genPath(name, target, dists, frees)
                         return
                     new_next.append([x - 1, y])
-            if y < 9:
+            if y < boardSize - 1:
                 if frees[x][y + 1]:
                     frees[x][y + 1] = False
                     dists[x][y + 1] = i + 1
@@ -158,13 +158,13 @@ def dijkstra(name, start, target, frees):
 def generateNextMove():
     freeMap = [[True for x in range(boardSize)] for y in range(boardSize)]
     for obstacle in obstacles:
-        if 0 <= obstacle[0] <= 9 and 0 <= obstacle[1] <= 9:
+        if 0 <= obstacle[0] <= boardSize - 1 and 0 <= obstacle[1] <= boardSize - 1:
             freeMap[obstacle[0]][obstacle[1]] = False
     for y in range(boardSize):
         for x in range(boardSize):
             distance = str(dist[x][y]).zfill(2)
             end = ""
-            if x == 9:
+            if x == boardSize - 1:
                 end = "\n"
             if freeMap[x][y]:
                 print("\u001B[42m[" + distance + "]\u001B[0m", end=end)
