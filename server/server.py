@@ -203,10 +203,9 @@ def generateNextMove():
             dijkstra(dest, locations[dest], destinations[dest][0], freeMap[:])
         elif locations[dest] == destinations[dest][0] and len(destinations[dest]) == 2:
             destinations[dest].pop(0)
-            if destinations[dest] == []:
-                destinations.pop(dest)
             print(dest + " has arrived.")
         else:
+            targets[dest] = locations[dest]
             print("Unit has arrived, awaiting orders.")
 
 
