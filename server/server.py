@@ -61,7 +61,8 @@ async def handle_ws(websocket, uri):
                 else:
                     destinations["yellow"] = [toCoords, fromCoords]
             if type == 2:
-                destinations = {}
+                for location in locations:
+                    destinations[location] = [locations[location]]
             print(json.dumps(destinations))
 
 
@@ -200,7 +201,7 @@ def generateNextMove():
     for dest in destinations:
         if dest in locations and dest in destinations and locations[dest] != destinations[dest][0]:
             dijkstra(dest, locations[dest], destinations[dest][0], freeMap[:])
-        elif locations[dest] == destinations[dest][0]:
+        elif locations[dest] == destinations[dest][0] and len(destinations[dest]) == 2:
             destinations[dest].pop(0)
             if destinations[dest] == []:
                 destinations.pop(dest)
