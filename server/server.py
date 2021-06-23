@@ -258,7 +258,9 @@ def echo(conn):
         # Try to send message buffer.
         try:
             generateNextMove()
+            print("Generated move.")
             conn.sendall(("{\"targets\":" + json.dumps(targets) + "}").encode("ascii"))
+            print("Info sent.")
         except Exception as e:
             print(e)
             print("Could not send data to", conn.getpeername())
