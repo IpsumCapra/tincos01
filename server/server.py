@@ -12,12 +12,13 @@ WSPORT = 8008
 BUFSIZE = 1024
 SCANRANGE = 100
 
+boardSize = 11
 messages = {}
 obstacles = []
 targets = {}
 destinations = {"unit0": [0, 4]}
-free = [[True for x in range(10)] for y in range(10)]
-dist = [[-1 for x in range(10)] for y in range(10)]
+free = [[True for x in range(boardSize)] for y in range(boardSize)]
+dist = [[-1 for x in range(boardSize)] for y in range(boardSize)]
 locations = {}
 movements = {}
 clientCount = 0
@@ -90,8 +91,8 @@ def genPath(name, target, dists, frees):
 
     targets[name] = path[len(path) - 2]
 
-    for y in range(10):
-        for x in range(10):
+    for y in range(boardSize):
+        for x in range(boardSize):
             distance = str(dists[x][y]).zfill(2)
             end = ""
             if x == 9:
@@ -109,7 +110,7 @@ def genPath(name, target, dists, frees):
 def dijkstra(name, start, target, frees):
     sX = start[0]
     sY = start[1]
-    dists = [[-1 for x in range(10)] for y in range(10)]
+    dists = [[-1 for x in range(boardSize)] for y in range(boardSize)]
     dists[sX][sY] = 0
     frees[sX][sY] = False
     next_nodes = [[sX, sY]]
@@ -155,12 +156,12 @@ def dijkstra(name, start, target, frees):
 
 
 def generateNextMove():
-    freeMap = [[True for x in range(10)] for y in range(10)]
+    freeMap = [[True for x in range(boardSize)] for y in range(boardSize)]
     for obstacle in obstacles:
         if 0 <= obstacle[0] <= 9 and 0 <= obstacle[1] <= 9:
             freeMap[obstacle[0]][obstacle[1]] = False
-    for y in range(10):
-        for x in range(10):
+    for y in range(boardSize):
+        for x in range(boardSize):
             distance = str(dist[x][y]).zfill(2)
             end = ""
             if x == 9:
