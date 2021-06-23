@@ -215,6 +215,10 @@ def echo(conn):
                 if msgType == 0:
                     if msgData not in obstacles and not robotLocation(msgData):
                         obstacles.append(msgData)
+                # Free places
+                if msgType == 1:
+                    if msgData in obstacles:
+                        obstacles.remove(msgData)
             print("Got message from " + sender)
             # print(str(data) + "\n")
         except Exception as e:
