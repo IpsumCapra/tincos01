@@ -202,6 +202,8 @@ def generateNextMove():
             dijkstra(dest, locations[dest], destinations[dest][0], freeMap[:])
         elif locations[dest] == destinations[dest][0]:
             destinations[dest].pop(0)
+            if destinations[dest] == []:
+                destinations.pop(dest)
             print(dest + " has arrived.")
 
 
