@@ -206,6 +206,8 @@ def generateNextMove():
             if destinations[dest] == []:
                 destinations.pop(dest)
             print(dest + " has arrived.")
+        else:
+            print("Unit has arrived, awaiting orders.")
 
 
 def robotLocation(pos):
