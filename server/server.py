@@ -41,7 +41,7 @@ async def handle_ws(websocket, uri):
             }
             await websocket.send(json.dumps(returnData))
 
-ws = websockets.serve(handle_ws, HOST, PORT)
+ws = websockets.serve(handle_ws, HOST, WSPORT)
 asyncio.get_event_loop().run_until_complete(ws)
 asyncio.get_event_loop().run_forever()
 
