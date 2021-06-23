@@ -200,7 +200,7 @@ def generateNextMove(dest):
     print("---")
     if dest in locations and dest in destinations and locations[dest] != destinations[dest][0]:
         dijkstra(dest, locations[dest], destinations[dest][0], freeMap[:])
-    elif locations[dest] == destinations[dest][0] and len(destinations[dest]) == 2:
+    elif locations[dest] == destinations[dest][0] and len(destinations[dest]) > 1:
         destinations[dest].pop(0)
         print(dest + " has arrived.")
     else:
