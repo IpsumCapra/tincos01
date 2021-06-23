@@ -113,21 +113,21 @@
             function SendLocation() {
                 let value1 = document.getElementById("inputSendUnit").value;
                 let value2 = document.getElementById("inputSendLocation").value;
-                console.log("Sent: " + value1 + ", " + value2);
-                // ws.send("The value was: " + value);
+                console.log("Sent: " + value1 + ", " + value2 + " - {\"type\":0, \""+value1+"\": ["+value2+"]}");
+                ws.send("{\"type\":0, \""+value1+"\": ["+value2+"]}");
             }
 
             function SendPickup() {
                 let value1 = document.getElementById("inputPickupLocation").value;
                 let value2 = document.getElementById("inputDeliverLocation").value;
-                console.log("Sent: " + value1 + ", " + value2);
-                // ws.send("The value was: " + value);
+                console.log("Sent: " + value1 + ", " + value2 + " - {\"type\":1, \"from\": ["+value1+"], \"to\": ["+value2+"]}");
+                ws.send("{\"type\":1, \"from\": ["+value1+"], \"to\": ["+value2+"]}");
             }
             
             
             function Stop() {
                 console.log("Sent: Stop");
-                // ws.send("The value was: " + value);
+                ws.send("{\"type\":2}");
             }
         </script>
     </body>
