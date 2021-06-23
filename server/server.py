@@ -56,10 +56,10 @@ async def handle_ws(websocket, uri):
                 toCoords = data["to"]
                 fromCoords = data["from"]
                 if destinations != {}:
-                    destinations[next(iter(destinations))].append(toCoords)
                     destinations[next(iter(destinations))].append(fromCoords)
+                    destinations[next(iter(destinations))].append(toCoords)
                 else:
-                    destinations["yellow"] = [toCoords, fromCoords]
+                    destinations["yellow"] = [fromCoords, toCoords]
             if type == 2:
                 for location in locations:
                     destinations[location] = [locations[location]]
@@ -133,6 +133,11 @@ def genPath(name, target, dists, frees):
 
 
 def dijkstra(name, start, target, frees):
+    for location in locations:
+        if location != name:
+            loc = locations[location]
+            frees[loc[0]][loc[1]] = False
+
     sX = start[0]
     sY = start[1]
     dists = [[-1 for x in range(boardSize)] for y in range(boardSize)]
