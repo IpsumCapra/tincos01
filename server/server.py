@@ -43,6 +43,7 @@ async def handle_ws(websocket, uri):
 
 def handle_s(sock):
     # Keep accepting connections.
+    global clientCount
     while True:
         conn, addr = sock.accept()
         clientCount += 1
