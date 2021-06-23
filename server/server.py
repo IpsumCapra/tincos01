@@ -180,7 +180,7 @@ def dijkstra(name, start, target, frees):
     print("Could not plan route.")
 
 
-def generateNextMove():
+def generateNextMove(dest):
     freeMap = [[True for x in range(boardSize)] for y in range(boardSize)]
     for obstacle in obstacles:
         if 0 <= obstacle[0] <= boardSize - 1 and 0 <= obstacle[1] <= boardSize - 1:
@@ -198,15 +198,14 @@ def generateNextMove():
             else:
                 print("\u001B[45m[" + distance + "]\u001B[0m", end=end)
     print("---")
-    for dest in destinations:
-        if dest in locations and dest in destinations and locations[dest] != destinations[dest][0]:
-            dijkstra(dest, locations[dest], destinations[dest][0], freeMap[:])
-        elif locations[dest] == destinations[dest][0] and len(destinations[dest]) == 2:
-            destinations[dest].pop(0)
-            print(dest + " has arrived.")
-        else:
-            targets[dest] = locations[dest]
-            print("Unit has arrived, awaiting orders.")
+    if dest in locations and dest in destinations and locations[dest] != destinations[dest][0]:
+        dijkstra(dest, locations[dest], destinations[dest][0], freeMap[:])
+    elif locations[dest] == destinations[dest][0] and len(destinations[dest]) == 2:
+        destinations[dest].pop(0)
+        print(dest + " has arrived.")
+    else:
+        targets[dest] = locations[dest]
+        print("Unit has arrived, awaiting orders.")
 
 
 def robotLocation(pos):
@@ -257,7 +256,7 @@ def echo(conn):
 
         # Try to send message buffer.
         try:
-            generateNextMove()
+            generateNextMove(sender)
             print("Generated move.")
             conn.sendall(("{\"targets\":" + json.dumps(targets) + "}").encode("ascii"))
             print("Info sent.")
