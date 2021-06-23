@@ -33,6 +33,7 @@ async def handle_ws(websocket, uri):
             print(f"Connection lost to {uri}")
             return
         if data == "request_messages":
+            global destinations
             returnData = {
                 "obstacles": obstacles,
                 "targets": targets,
