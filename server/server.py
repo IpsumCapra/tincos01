@@ -16,7 +16,7 @@ boardSize = 11
 messages = {}
 obstacles = []
 targets = {}
-destinations = {"unit0": [0, 4]}
+destinations = {"yellow": [[0, 4]]}
 free = [[True for x in range(boardSize)] for y in range(boardSize)]
 dist = [[-1 for x in range(boardSize)] for y in range(boardSize)]
 locations = {}
@@ -41,7 +41,28 @@ async def handle_ws(websocket, uri):
             }
             await websocket.send(json.dumps(returnData))
         else:
-            print(data)
+            # print(data)
+            data = json.loads(data)
+            type = data["type"]
+            if type == 0:
+                name = data["name"]
+                to = data["to"]
+                if name in destinations:
+                    destinations[name].append(to)
+                else:
+                    destinations[name] = [to]
+            if type == 1:
+                toCoords = data["to"]
+                fromCoords = data["from"]
+                if destinations != {}:
+                    destinations[next(iter(destinations))].append(toCoords)
+                    destinations[next(iter(destinations))].append(fromCoords)
+                else:
+                    destinations["yellow"] = [toCoords, fromCoords]
+            if type == 2:
+                destinations = {}
+            print(json.dumps(destinations))
+
 
 
 def handle_s(sock):
@@ -176,9 +197,10 @@ def generateNextMove():
                 print("\u001B[45m[" + distance + "]\u001B[0m", end=end)
     print("---")
     for dest in destinations:
-        if dest in locations and dest in destinations and locations[dest] != destinations[dest]:
-            dijkstra(dest, locations[dest], destinations[dest], freeMap[:])
-        else:
+        if dest in locations and dest in destinations and locations[dest] != destinations[dest][0]:
+            dijkstra(dest, locations[dest], destinations[dest][0], freeMap[:])
+        elif locations[dest] == destinations[dest][0]:
+            destinations[dest].pop(0)
             print(dest + " has arrived.")
 
 

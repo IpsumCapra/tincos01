@@ -2,7 +2,7 @@
 <html>
     <head></head>
     <body>
-        <canvas id="myCanvas" width="240" height="240" style="background-color:darkblue">
+        <canvas id="myCanvas" width="220" height="220" style="background-color:darkblue">
         </canvas>
 
         <div id="textUnits" style ="background-color:darkgray">
@@ -114,7 +114,7 @@
                 let value1 = document.getElementById("inputSendUnit").value;
                 let value2 = document.getElementById("inputSendLocation").value;
                 console.log("Sent: " + value1 + ", " + value2 + " - {\"type\":0, \""+value1+"\": ["+value2+"]}");
-                ws.send("{\"type\":0, \""+value1+"\": ["+value2+"]}");
+                ws.send("{\"type\":0, \"name\":\""+value1+"\", \"to\":["+value2+"]}");
             }
 
             function SendPickup() {
