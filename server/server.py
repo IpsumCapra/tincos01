@@ -1,9 +1,14 @@
 import socket
 import threading
 import json
+import websockets
+import asyncio
+
 
 HOST = ""
 PORT = 9000
+
+WSPORT = 8008
 
 BUFSIZE = 1024
 SCANRANGE = 100
@@ -17,6 +22,28 @@ dist = [[-1 for x in range(10)] for y in range(10)]
 locations = {}
 movements = {}
 clientCount = 0
+
+
+async def handle_ws(websocket, uri):
+    print(f"Connection accepted from {uri}")
+    while True:
+        try:
+            data = await websocket.recv()
+        except:
+            print(f"Connection lost to {uri}")
+            return
+        if data == "request_messages":
+            returnData = {
+                "obstacles": obstacles,
+                "targets": targets,
+                "destinations": destinations,
+                "locations": locations
+            }
+            await websocket.send(json.dumps(returnData))
+
+ws = websockets.serve(handle_ws, HOST, PORT)
+asyncio.get_event_loop().run_until_complete(ws)
+asyncio.get_event_loop().run_forever()
 
 
 def inPath(x, y, path):
@@ -152,10 +179,6 @@ def robotLocation(pos):
             return True
     return False
 
-# print(json.dumps(obstacles))
-# returnData = "{\"obstacles\":"+json.dumps(obstacles)+", \"targets\":"+json.dumps(targets)+", \"destinations\":"+json.dumps(destinations)+"}"
-# print(returnData)
-
 def echo(conn):
     global messages, clientCount
     while True:
@@ -165,17 +188,6 @@ def echo(conn):
         if data == "":
             print("Could not read data from", conn.getpeername())
             break
-        
-        # Give data for the webpage dashboard
-        # try:
-        #     if data == "request_messages":
-        #         returnData = {"obstacles":obstacles, "targets":targets, "destinations":destinations}
-        #         conn.sendall((returnData).encode("ascii"))
-        #         continue
-        # except Exception as e:
-        #     print(e)
-        #     print("Invalid message from ", conn.getpeername())
-        #     break
 
         # Try to convert received data into JSON, Sort, and store.
         try:
@@ -204,9 +216,7 @@ def echo(conn):
 
         # Try to send message buffer.
         try:
-            print("test1")
             generateNextMove()
-            print("test2")
             conn.sendall(("{\"targets\":" + json.dumps(targets) + "}").encode("ascii"))
         except:
             print("Could not send data to", conn.getpeername())
