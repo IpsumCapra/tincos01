@@ -11,7 +11,7 @@ SCANRANGE = 100
 messages = {}
 obstacles = []
 targets = {}
-destinations = {"Sherman": [0, 4]}
+destinations = {"unit0": [0, 4]}
 free = [[True for x in range(10)] for y in range(10)]
 dist = [[-1 for x in range(10)] for y in range(10)]
 locations = {}
@@ -152,6 +152,9 @@ def robotLocation(pos):
             return True
     return False
 
+# print(json.dumps(obstacles))
+# returnData = "{\"obstacles\":"+json.dumps(obstacles)+", \"targets\":"+json.dumps(targets)+", \"destinations\":"+json.dumps(destinations)+"}"
+# print(returnData)
 
 def echo(conn):
     global messages, clientCount
@@ -162,6 +165,17 @@ def echo(conn):
         if data == "":
             print("Could not read data from", conn.getpeername())
             break
+        
+        # Give data for the webpage dashboard
+        # try:
+        #     if data == "request_messages":
+        #         returnData = {"obstacles":obstacles, "targets":targets, "destinations":destinations}
+        #         conn.sendall((returnData).encode("ascii"))
+        #         continue
+        # except Exception as e:
+        #     print(e)
+        #     print("Invalid message from ", conn.getpeername())
+        #     break
 
         # Try to convert received data into JSON, Sort, and store.
         try:
@@ -190,7 +204,9 @@ def echo(conn):
 
         # Try to send message buffer.
         try:
+            print("test1")
             generateNextMove()
+            print("test2")
             conn.sendall(("{\"targets\":" + json.dumps(targets) + "}").encode("ascii"))
         except:
             print("Could not send data to", conn.getpeername())

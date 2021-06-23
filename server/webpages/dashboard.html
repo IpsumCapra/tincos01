@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <canvas id="myCanvas" width="240" height="240" style="background-color:darkblue">
+        </canvas>
+
+        <div id="textUnits" style ="background-color:darkgray">
+            Available units:<br>
+        </div>
+        
+        <div id="textQueue" style ="background-color:lightgray">
+            Queue:<br>
+        </div>
+
+        <br>
+
+        <div id="fieldSend" style ="background-color:darkgray">
+            Send <input type="text" id="inputSendUnit" size="6"> to location <input type="text" id="inputSendLocation" size="6"><button onclick="SendLocation()">Send command</button>
+        </div>
+
+        <div id="fieldDeliver" style ="background-color:lightgray">
+            Pickup from <input type="text" id="inputPickupLocation" size="6"> and deliver to <input type="text" id="inputDeliverLocation" size="6"><button onclick="SendPickup()">Add to queue</button>
+        </div>
+        
+        <div id="fieldStop" style ="background-color:darkgray">
+            <button onclick="Stop()">Stop</button>
+        </div>
+
+        
+        <script>
+            // Websocket connection with server
+            let ws = new WebSocket("ws://localhost:8000");
+            
+            function get_data() {
+                ws.send("request_messages");
+            }
+            
+            ws.onmessage = function(message) {
+                let data = JSON.parse(message.data);
+                // Do something with the data
+                //document.getElementById("myDiv").innerHTML = JSON.stringify(data);
+
+                UpdateCanvas();
+                UpdateUnits();
+                UpdateQueue();
+            }
+            
+            setInterval(get_data, 1000);
+        
+
+            // Canvas
+            CanvasRenderingContext2D.prototype.clear = function() {
+                this.clearRect (0, 0, this.canvas.width, this.canvas.height);
+            };
+            CanvasRenderingContext2D.prototype.drawBlock = function(x, y) {
+                this.fillRect(20*x, 20*y, 20, 20) ;
+            }
+            
+            let myCanvas = document.getElementById("myCanvas").getContext("2d");
+            
+            function UpdateCanvas() {
+                myCanvas.clear();
+
+                // Obstacles
+                myCanvas.fillStyle = "brown";
+                //for (let index = 0; index < array.length; index++) {
+                    //const element = array[index];
+                    myCanvas.drawBlock(5, 5);
+                //}
+
+                // Robots
+                myCanvas.fillStyle = "red";
+                myCanvas.drawBlock(0, 0);
+                myCanvas.fillStyle = "green";
+                myCanvas.drawBlock(1, 0);
+                myCanvas.fillStyle = "blue";
+                myCanvas.drawBlock(2, 0);
+                myCanvas.fillStyle = "yellow";
+                myCanvas.drawBlock(3, 0);
+            }
+
+            // Textfield textUnits
+            function UpdateUnits(){
+                var text = "Available units:<br>"
+                //for (let index = 0; index < array.length; index++) { ////////////
+                //    const element = array[index];
+
+                    var unitName = "";
+                    var unitLocation = "";
+                    
+                    text += "<span style =\"color:red\">"+unitName+"</span>: <span>"+unitLocation+"</span><br>";
+                //}
+                
+                document.getElementById("textUnits").innerHTML = text;
+            }
+
+            // Textfield textQueue
+            function UpdateQueue(){
+                var text = "Queue:<br>"
+
+                //for (let index = 0; index < array.length; index++) { ////////////
+                //    const element = array[index];
+
+                    var unitName = "";
+                    var unitLocationFrom = "";
+                    var unitLocationTo = "";
+                    
+                    text += "<span>"+unitName+"</span>: <span>"+unitLocationFrom+"</span> -> <span>"+unitLocationTo+"</span><br>";
+                //}
+
+                document.getElementById("textQueue").innerHTML = text;
+            }
+
+            // Input
+            function SendLocation() {
+                let value1 = document.getElementById("inputSendUnit").value;
+                let value2 = document.getElementById("inputSendLocation").value;
+                console.log("Sent: " + value1 + ", " + value2);
+                // ws.send("The value was: " + value);
+            }
+
+            function SendPickup() {
+                let value1 = document.getElementById("inputPickupLocation").value;
+                let value2 = document.getElementById("inputDeliverLocation").value;
+                console.log("Sent: " + value1 + ", " + value2);
+                // ws.send("The value was: " + value);
+            }
+            
+            
+            function Stop() {
+                console.log("Sent: Stop");
+                // ws.send("The value was: " + value);
+            }
+        </script>
+    </body>
+</html>
