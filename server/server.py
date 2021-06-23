@@ -40,6 +40,8 @@ async def handle_ws(websocket, uri):
                 "locations": locations
             }
             await websocket.send(json.dumps(returnData))
+        else:
+            print(data)
 
 
 def handle_s(sock):
