@@ -13,10 +13,6 @@
             Queue:<br>
         </div>
 
-        <div id="myDiv" style ="background-color:lightgray">
-
-        </div>
-
         <br>
 
         <div id="fieldSend" style ="background-color:darkgray">
@@ -31,7 +27,15 @@
             <button onclick="Stop()">Stop</button>
         </div>
 
-        
+        <br>
+
+        <div id="textDebug" style ="background-color:lightgray">
+            Debug: <br>
+        </div>
+        <div id="myDiv" style ="background-color:lightgray">
+
+        </div>
+
         <script>
             // Websocket connection with server
             let data;
@@ -101,7 +105,7 @@
                 for (const dest in destinations) {
                     const destination = destinations[dest];
                     for (let i = 1; i < destination.length; i++) {
-                        text += "<span>" + dest + "</span>: <span>" + JSON.stringify(destination[i - 1]) + "</span> -> <span>" + JSON.stringify(destination[i - 1]) + "</span><br>";
+                        text += "<span>" + dest + "</span>: <span>" + JSON.stringify(destination[i - 1]) + "</span> -> <span>" + JSON.stringify(destination[i]) + "</span><br>";
                     }
                 }
                 document.getElementById("textQueue").innerHTML = text;
